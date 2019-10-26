@@ -1,29 +1,18 @@
 import React, { Component } from 'react';
 import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
 import reducers from './src/reducers';
-import {
-  HomeScreen,
-  PrepareScreen,
-  SafetyScreen
-} from './components';
+import HomeScreen from './src/components/HomeScreen';
+import PrepareScreen from './src/components/PrepareScreen';
+import SafetyScreen from './src/components/SafetyScreen';
 
-const AppNavigator = createStackNavigator({
-  Home: {
-    screen: HomeScreen,
-  },
-  Prepare: {
-    screen: PrepareScreen,
-  },
-  Safety: {
-    screen: SafetyScreen,
-  }
-}, 
-{
-  initialRouteName: Home
+const AppNavigator = createBottomTabNavigator({
+  Prepare: PrepareScreen,
+  Home: HomeScreen,
+  Safety: SafetyScreen,
 });
 
 const AppContainer = createAppContainer(AppNavigator);
@@ -38,3 +27,5 @@ class App extends Component {
     );
   }
 }
+
+export default App;

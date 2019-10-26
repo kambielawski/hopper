@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import PlanReducer from './ListReducer';
+import PlanReducer from './PlanReducer';
 
 export default combineReducers({
   PlanReducer
