@@ -1,16 +1,9 @@
 {
   "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": 19001,
-<<<<<<< HEAD
-  "packagerPid": 13152,
-  "expoServerNgrokUrl": "https://23-6wb.kamtb28.ui.exp.direct",
-  "packagerNgrokUrl": "https://packager.23-6wb.kamtb28.ui.exp.direct",
-  "ngrokPid": 28380
-=======
-  "packagerPid": 17667,
-  "expoServerNgrokUrl": "https://d4-4xn.anonymous.ui.exp.direct",
-  "packagerNgrokUrl": "https://packager.d4-4xn.anonymous.ui.exp.direct",
-  "ngrokPid": 17684
->>>>>>> a9acea499a259fdc184592eaf1738e077e406ef6
+  "packagerPort": 19003,
+  "packagerPid": 21325,
+  "expoServerNgrokUrl": "https://kh-z5k.anonymous.ui.exp.direct",
+  "packagerNgrokUrl": "https://packager.kh-z5k.anonymous.ui.exp.direct",
+  "ngrokPid": 21333
 }
