@@ -3,15 +3,27 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { StyleSheet, Text, View } from 'react-native';
 
 import reducers from './src/reducers';
+import {
+  HomeScreen,
+  PrepareScreen,
+  SafetyScreen
+} from './components';
 
 const AppNavigator = createStackNavigator({
   Home: {
-    screen: Home,
+    screen: HomeScreen,
   },
-
+  Prepare: {
+    screen: PrepareScreen,
+  },
+  Safety: {
+    screen: SafetyScreen,
+  }
+}, 
+{
+  initialRouteName: Home
 });
 
 const AppContainer = createAppContainer(AppNavigator);
@@ -21,6 +33,7 @@ class App extends Component {
     const store = createStore(reducers);
     return(
       <Provider store={store}>
+        <AppContainer />
       </Provider>
     );
   }
