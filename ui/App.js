@@ -4,22 +4,12 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
-<<<<<<< Updated upstream
 import reducers from './src/reducers';
 import {
   HomeScreen,
   PrepareScreen,
   SafetyScreen
 } from './components';
-=======
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Marcus is da best!</Text>
-    </View>
-  );
-}
->>>>>>> Stashed changes
 
 const AppNavigator = createStackNavigator({
   Home: {
