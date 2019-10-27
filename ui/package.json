@@ -22,10 +22,14 @@
     "react-dom": "16.8.3",
     "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "react-native-confetti": "^0.1.0",
 =======
     "react-native-datepicker": "^1.7.2",
 >>>>>>> homescreen
+=======
+    "react-native-confetti": "^0.1.0",
+>>>>>>> remotes/origin/marcus
     "react-native-elements": "^1.2.6",
     "react-native-gesture-handler": "^1.4.1",
     "react-native-maps": "~0.25.0",

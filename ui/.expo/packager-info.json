@@ -1,1 +1,13 @@
+<<<<<<< HEAD
 {}
+=======
+{
+  "expoServerPort": 19000,
+  "expoServerNgrokUrl": "https://a6-kj2.anonymous.ui.exp.direct",
+  "packagerNgrokUrl": "https://packager.a6-kj2.anonymous.ui.exp.direct",
+  "ngrokPid": 27568,
+  "devToolsPort": 19002,
+  "packagerPort": 19004,
+  "packagerPid": 27560
+}
+>>>>>>> remotes/origin/marcus
