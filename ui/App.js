@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
@@ -8,10 +9,16 @@ import reducers from './src/reducers';
 import HomeScreen from './src/components/HomeScreen';
 import PrepareScreen from './src/components/PrepareScreen';
 import SafetyScreen from './src/components/SafetyScreen';
+import LocationScreen from './src/components/LocationScreen';
+
+const HomeStack = createStackNavigator({
+  Home: HomeScreen,
+  Location: LocationScreen,
+});
 
 const AppNavigator = createBottomTabNavigator({
   Prepare: PrepareScreen,
-  Home: HomeScreen,
+  Home: HomeStack,
   Safety: SafetyScreen,
 });
 
