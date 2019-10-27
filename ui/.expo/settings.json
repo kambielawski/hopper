@@ -1,24 +1,8 @@
 {
-<<<<<<< HEAD
   "hostType": "tunnel",
   "lanType": "ip",
   "dev": true,
   "minify": false,
-  "urlRandomness": "hn-gic",
-=======
-<<<<<<< HEAD
-  "hostType": "lan",
-  "lanType": "ip",
-  "dev": true,
-  "minify": false,
-  "urlRandomness": null,
-=======
-  "hostType": "tunnel",
-  "lanType": "ip",
-  "dev": true,
-  "minify": false,
-  "urlRandomness": "a6-kj2",
->>>>>>> remotes/origin/marcus
->>>>>>> dbe8d86954e5835ec49d417646c07eb023960fde
+  "urlRandomness": "en-m3c",
   "https": false
 }

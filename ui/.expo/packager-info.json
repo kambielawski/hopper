@@ -1,25 +1,9 @@
-<<<<<<< HEAD
 {
+  "expoServerNgrokUrl": "https://en-m3c.kamtb28.ui.exp.direct",
+  "packagerNgrokUrl": "https://packager.en-m3c.kamtb28.ui.exp.direct",
+  "ngrokPid": 33672,
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 12812,
-  "expoServerNgrokUrl": "https://hn-gic.kamtb28.ui.exp.direct",
-  "packagerNgrokUrl": "https://packager.hn-gic.kamtb28.ui.exp.direct",
-  "ngrokPid": 12092
+  "packagerPid": 32888
 }
-=======
-<<<<<<< HEAD
-{}
-=======
-{
-  "expoServerPort": 19000,
-  "expoServerNgrokUrl": "https://a6-kj2.anonymous.ui.exp.direct",
-  "packagerNgrokUrl": "https://packager.a6-kj2.anonymous.ui.exp.direct",
-  "ngrokPid": 27568,
-  "devToolsPort": 19002,
-  "packagerPort": 19004,
-  "packagerPid": 27560
-}
->>>>>>> remotes/origin/marcus
->>>>>>> dbe8d86954e5835ec49d417646c07eb023960fde
