@@ -1,1 +1,9 @@
-{}
+{
+  "devToolsPort": 19002,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 12812,
+  "expoServerNgrokUrl": "https://hn-gic.kamtb28.ui.exp.direct",
+  "packagerNgrokUrl": "https://packager.hn-gic.kamtb28.ui.exp.direct",
+  "ngrokPid": 12092
+}
