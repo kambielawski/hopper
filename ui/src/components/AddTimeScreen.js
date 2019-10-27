@@ -1,19 +1,48 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, DatePickerIOS } from 'react-native';
+import { connect } from 'react-redux';
+import { Button } from 'react-native-elements';
+import TimePicker from './TimePicker';
+
+import { AddStartTime, AddEndTime } from '../actions/PlanActions';
+// import DateTimePicker from '@react-native-community/datetimepicker';
 
 class AddTimeScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { startTime: new Date() };
 
-  static navigationOptions = {
-    title: "Pick a Time"
-  };
+    this.setDate = this.setDate.bind(this);
+  }
+
+  setDate(newDate) {
+    this.setState({ startTime: newDate });
+    this.props.AddStartTime(newDate);
+  }
 
   render() {
-    return(
-      <View>
-        <Text>Time screen</Text>
+    return (
+      <View style={styles.viewStyle}>
+        <DatePickerIOS date={this.state.startTime} onDateChange={this.setDate}  />
+        <Button style={{marginLeft: 20, marginRight: 20}} title="Next" onPress={() => this.props.navigation.navigate('AddFriends')} />
       </View>
     );
   }
 }
 
-export default AddTimeScreen;
+const styles = {
+  viewStyle: {
+    flex: 1,
+    justifyContent: 'center',
+  }
+}
+
+const mapStateToProps = state => {
+  const { startTime } = state.PlanReducer;
+
+  console.log(startTime);
+
+  return { startTime };
+}
+
+export default connect(mapStateToProps, { AddStartTime })(AddTimeScreen);
