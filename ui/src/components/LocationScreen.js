@@ -1,15 +1,22 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, TextInput } from 'react-native';
+import { connect } from 'react-redux';
 import MapView, { Marker } from 'react-native-maps';
 import { Card, Button } from 'react-native-elements';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import { AppLoading } from 'expo';
 
+import { AddLocation } from '../actions/PlanActions';
+
 const FOUR_SQUARE_CLIENT_ID = "ZJAG3DIZCQMXGZVRCJX4KEWBYRXTZUC5MVSHY5SHZZ2RLFKE";
 const FOUR_SQUARE_CLIENT_SECRET = "X2WPORTIEGVD54KYSOWPBB30IWTE1DCANFRIDXQTAK1YJPEQ";
 
-export default class LocationScreen extends Component {
+class LocationScreen extends Component {
+
+  static navigationOptions = {
+    title: "Location"
+  };
 
   state = {
     markers: [],
@@ -20,6 +27,7 @@ export default class LocationScreen extends Component {
     region: undefined,
     loading: true,
     selectedMarker: undefined,
+    searchText: ''
   }
 
   _getLocationAsync = async () => {
@@ -40,13 +48,15 @@ export default class LocationScreen extends Component {
 
   getVenues = async () => {
 
+    this.setState({markers: []});
+
     const SEARCH_LATITUDE = this.state.currentLocationLatitude;
     const SEARCH_LONGITUDE = this.state.currentLocationLongitude;
     const responseLimit = 1;
-    let response = await fetch(`https://api.foursquare.com/v2/venues/explore?client_id=${FOUR_SQUARE_CLIENT_ID}&client_secret=${FOUR_SQUARE_CLIENT_SECRET}&v=20180323&limit=${responseLimit}&ll=${SEARCH_LATITUDE},${SEARCH_LONGITUDE}&query=coffee`)
+    let response = await fetch(`https://api.foursquare.com/v2/venues/explore?client_id=${FOUR_SQUARE_CLIENT_ID}&client_secret=${FOUR_SQUARE_CLIENT_SECRET}&v=20180323&limit=${responseLimit}&ll=${SEARCH_LATITUDE},${SEARCH_LONGITUDE}&query=${this.state.searchText}`)
     let myjson = await response.json();
     results = myjson.response.groups[0].items;
-    console.log(results);
+
     for (let i = 0; i < results.length; i++) {
       results[i] = {
         name: results[i].venue.name,
@@ -60,18 +70,28 @@ export default class LocationScreen extends Component {
       }
       this.setState({ markers: [...this.state.markers, results[i]] });
     }
-    console.log(this.state.markers);
 
+  }
+
+  renderNextButton = () => {
+    if (!this.props.PlanReducer.locations[0]) {
+      return null;
+    }
+    return (
+      <Button title="Next" onPress={() => this.props.navigation.navigate('Time')}/>
+    )
   }
 
   renderVenuePopup = markerData => {
     if (!markerData) return null;
 
+    let isAdded = this.props.PlanReducer.locations.indexOf(markerData) >= 0;
+
     return (
-      <View>
-        <Card style={{marginBottom: 15}} title={markerData.name}>
-          <Text style={{alignSelf: 'center', paddingBottom: 15}}>{markerData.description}</Text>
-          <Button title="Let's go!" onPress={() => console.log('adding ' + markerData.name + ' to list')} />
+      <View style={{ marginBottom: 15 }}>
+        <Card style={{ marginBottom: 15 }} title={markerData.name}>
+          <Text style={{ alignSelf: 'center', paddingBottom: 15 }}>{markerData.description}</Text>
+          {isAdded ? <Text style={{ alignSelf: 'center', color: '#199200', fontWeight: 'bold' }}>Added</Text> : <Button title="Let's go!" onPress={() => this.props.AddLocation(markerData)} />}
         </Card>
       </View>
     );
@@ -84,15 +104,25 @@ export default class LocationScreen extends Component {
           startAsync={this._getLocationAsync}
           onFinish={() => {
             this.setState({ loading: false });
-            this.getVenues();
           }}
           onError={console.warn}
         />
       );
     }
 
+    onChangeText = text => {
+      this.setState({searchText: text});
+    }
+
     return (
       <View style={styles.map}>
+        <TextInput
+          style={{height: 40, fontSize: 18, marginLeft: 10}}
+          onChangeText={text => onChangeText(text)}
+          value={this.state.searchText}
+          onSubmitEditing={() => {this.getVenues()}}
+          placeholder={"Search for venues"}
+        />
         <MapView
           style={{ flex: 1 }}
           region={{
@@ -112,6 +142,7 @@ export default class LocationScreen extends Component {
             />
           ))}
         </MapView>
+        {this.renderNextButton()}
         {this.renderVenuePopup(this.state.selectedMarker)}
       </View>
     );
@@ -121,5 +152,12 @@ export default class LocationScreen extends Component {
 const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
-  },
+  }
 });
+
+const mapStateToProps = state => {
+  const { PlanReducer } = state;
+  return { PlanReducer };
+}
+
+export default connect(mapStateToProps, { AddLocation })(LocationScreen);

@@ -10,10 +10,12 @@ import HomeScreen from './src/components/HomeScreen';
 import PrepareScreen from './src/components/PrepareScreen';
 import SafetyScreen from './src/components/SafetyScreen';
 import LocationScreen from './src/components/LocationScreen';
+import AddTimeScreen from './src/components/AddTimeScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
   Location: LocationScreen,
+  Time: AddTimeScreen,
 });
 
 const AppNavigator = createBottomTabNavigator({
