@@ -1,120 +1,88 @@
 import React, { Component } from 'react';
-import { View, Button } from 'react-native';
+import { View, Button,TextInput } from 'react-native';
 import { Header, SearchBar } from 'react-native-elements';
-import {
-  Stitch,
-  RemoteMongoClient,
-  BSON
-} from "mongodb-stitch-browser-sdk";
+import { Stitch, RemoteMongoClient,AnonymousCredential } from "mongodb-stitch-react-native-sdk";
+const MongoDB = require('mongodb-stitch-react-native-services-mongodb-remote');
 
-
-const items = mongodb.db("MyData").collection("ulta_product");
-const product_avail = mongodb.db("MyData").collection("ulta");
-const stores = mongodb.db("MyData").collection("ulta_store");
+import Confetti from "react-native-confetti";
 
 class PrepareScreen extends Component {
-
-  onstructor() {
-    super();
-    this.state = {
-      value: "",
-      result: [],
+  constructor(props) {
+    super(props);
+    this.state={
+      currentUserId: undefined,
+      client: undefined,
+      tasks: undefined,
+      atlasClient: undefined,
+      myData: undefined,
+      search: undefined
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.displayItems = this.displayItems.bind(this);
-    this.addItem = this.addItem.bind(this);
+    this._loadClient = this._loadClient.bind(this);
+    this._onPressSubmit = this._onPressSubmit.bind(this);
+
   }
-  
+
   componentDidMount() {
-    // Initialize the App Client
-    this.client = Stitch.initializeDefaultAppClient("hopper-ylufi");
-    // Get a MongoDB Service Client
-    // This is used for logging in and communicating with Stitch
-    const mongodb = this.client.getServiceClient(
-      RemoteMongoClient.factory,
-      "mongodb-atlas"
-    );
-    // Get a reference to the todo database
-    this.db = mongodb.db("MyData");
-    this.displayItemsOnLoad();
-  }
-  
-  displayItems() {
-    // query the remote DB and update the component state
-    this.db
-      .collection("ulta_product")
-      .find({}, { limit: 100 })
-      .asArray()
-      .then(result => {
-        this.setState({result});
-      });
-   }
-  displayItemsOnLoad() {
-    // Anonymously log in and display comments on load
-    this.client.auth
-      .loginWithCredential(new AnonymousCredential())
-      .then(this.displayItems)
-      .catch(console.error);
-  }
-  findItem(event) {
-    event.preventDefault();
-    const { value } = this.state;
-    // insert the todo into the remote Stitch DB
-    // then re-query the DB and display the new todos
-
-    const query = { "DESCRIPTION": { "$regex": ".* "+value + " .*" } };
-    const options = {
-      "projection": { "_id": 0 },
-      "sort": { "DISPLAY_NAME": 1 }
-    };
-
-    this.db
-      .collection("ulta_product")
-      .find(query, options)
-      .asArray()
-      .then(result => {
-        this.setState({result});
-      });
-  }
-  handleChange(event) {
-    this.setState({ value: event.target.value });
+    this._loadClient();
   }
 
-  
+  _loadClient() {
+    Stitch.initializeDefaultAppClient('hopper-ylufi').then(client => {
+      this.setState({ client });
+      client.auth.loginWithCredential(new AnonymousCredential()).then(user => {
+        console.log(`Successfully logged in as user ${user.id}`);
+        this.setState({ currentUserId: user.id })
+    }).catch(err => {
+        console.log(`Failed to log in anonymously: ${err}`);
+        this.setState({ currentUserId: undefined })
+    });
+      const dbClient = client.getServiceClient(MongoDB.RemoteMongoClient.factory, "mongodb-atlas");     
+      this.setState({atlasClient : dbClient});
+      this.setState({myData : dbClient.db("MyData")});
+    });
+   
+  }
+
+    _onPressSubmit() {
+      
+      const collection = this.state.myData.collection("ulta_product");
+      const query = { "DESCRIPTION": { "$regex": ". *"+this.state.search+".*"}};
+      const projection = { "_id": 0 };
+      return collection.find(query, projection)
+      .toArray()
+      .then(items => {
+        console.log(`Successfully found ${items.length} documents.`)
+        items.forEach(console.log)
+        return items
+      })
+      .catch(err => console.error(`Failed to find documents: ${err}`))  }
+ 
 
   render() {
+    const { search } = this.state;
     return(
       <View style={{marginTop:20}}>
         <Header leftComponent={{ icon: 'whatshot' }}
           statusBarProps={{ barStyle: 'light-content' }}
           barStyle="light-content"
-          centerComponent={{ h3: 'Spice Up The Night', style: { color: '#fff' } } }
+          centerComponent={{ text: 'Spice Up The Night', style: { color: '#fff' } } }
           containerStyle={{
           backgroundColor: '#3D6DCC',
           justifyContent: 'space-around',
           }}
         />
-        <form onSubmit={this.addItem}>
-          <SearchBar 
-            placeholder="Type Here..."
-            onChangeText={this.handleChange}
-            value={this.state.value}
-          />
-          <input type="submit" value="Submit" 
-            title="Search"
-            color="red"
-          />
-        </form>
-        <ul>
-          {/* Map over the todos from our remote DB */}
-          {this.state.result.map(res => {
-            return <li>{res.item}</li>;
-          })}
-        </ul>
+        <TextInput
+          placeholder="Type Here..."
+          onChangeText={(text) => this.setState({search: text})}
+        />
+        <Button
+          title="Search"
+          color="red"
+          onPress = {this._onPressSubmit}
+			  />
       </View>
     );
   }
-
 }
 
 export default PrepareScreen;

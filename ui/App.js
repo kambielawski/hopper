@@ -4,6 +4,9 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
+import { Button, StyleSheet, Text, View } from 'react-native';
+import { Stitch, AnonymousCredential } from 'mongodb-stitch-react-native-sdk';
+
 import reducers from './src/reducers';
 import HomeScreen from './src/components/HomeScreen';
 import PrepareScreen from './src/components/PrepareScreen';
@@ -18,6 +21,52 @@ const AppNavigator = createBottomTabNavigator({
 const AppContainer = createAppContainer(AppNavigator);
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state={
+      currentUserId: undefined,
+      client: undefined
+    };
+    this._loadClient = this._loadClient.bind(this);
+    this._onPressLogin = this._onPressLogin.bind(this);
+    this._onPressLogout = this._onPressLogout.bind(this);
+  }
+ 
+  componentDidMount() {
+    this._loadClient();
+  }
+
+ 
+  _loadClient() {
+    Stitch.initializeDefaultAppClient('hopper-ylufi').then(client => {
+      this.setState({ client });
+ 
+      if(client.auth.isLoggedIn) {
+        this.setState({ currentUserId: client.auth.user.id })
+      }
+    });
+  }
+ 
+  _onPressLogin() {
+    this.state.client.auth.loginWithCredential(new AnonymousCredential()).then(user => {
+        console.log(`Successfully logged in as user ${user.id}`);
+        this.setState({ currentUserId: user.id })
+    }).catch(err => {
+        console.log(`Failed to log in anonymously: ${err}`);
+        this.setState({ currentUserId: undefined })
+    });
+  }
+ 
+  _onPressLogout() {
+    this.state.client.auth.logout().then(user => {
+        console.log(`Successfully logged out`);
+        this.setState({ currentUserId: undefined })
+    }).catch(err => {
+        console.log(`Failed to log out: ${err}`);
+        this.setState({ currentUserId: undefined })
+    });
+  }
   render() {
     const store = createStore(reducers);
     return(
@@ -27,5 +76,16 @@ class App extends Component {
     );
   }
 }
+
+
+ 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+})
 
 export default App;
