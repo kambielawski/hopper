@@ -1,16 +1,8 @@
 {
-<<<<<<< HEAD
   "hostType": "tunnel",
   "lanType": "ip",
   "dev": true,
   "minify": false,
-  "urlRandomness": "23-6wb",
-=======
-  "hostType": "lan",
-  "lanType": "ip",
-  "dev": true,
-  "minify": false,
-  "urlRandomness": "d4-4xn",
->>>>>>> a9acea499a259fdc184592eaf1738e077e406ef6
+  "urlRandomness": "2s-ufm",
   "https": false
 }
