@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "devToolsPort": 19002,
   "expoServerPort": 19000,
@@ -7,3 +8,18 @@
   "packagerNgrokUrl": "https://packager.hn-gic.kamtb28.ui.exp.direct",
   "ngrokPid": 12092
 }
+=======
+<<<<<<< HEAD
+{}
+=======
+{
+  "expoServerPort": 19000,
+  "expoServerNgrokUrl": "https://a6-kj2.anonymous.ui.exp.direct",
+  "packagerNgrokUrl": "https://packager.a6-kj2.anonymous.ui.exp.direct",
+  "ngrokPid": 27568,
+  "devToolsPort": 19002,
+  "packagerPort": 19004,
+  "packagerPid": 27560
+}
+>>>>>>> remotes/origin/marcus
+>>>>>>> dbe8d86954e5835ec49d417646c07eb023960fde
