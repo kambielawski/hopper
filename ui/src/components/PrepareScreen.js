@@ -1,11 +1,88 @@
 import React, { Component } from 'react';
-import { View, Button } from 'react-native';
-import { Header, SearchBar, Icon, Input } from 'react-native-elements';
+import { View, TextInput, Text, FlatList, SafeAreaView } from 'react-native';
+import { Header, SearchBar, Icon, Input, Button, PricingCard } from 'react-native-elements';
+import { Stitch, RemoteMongoClient, AnonymousCredential } from "mongodb-stitch-react-native-sdk";
+const MongoDB = require('mongodb-stitch-react-native-services-mongodb-remote');
+
+import Confetti from "react-native-confetti";
 
 class PrepareScreen extends Component {
-  state = {
-    search: '',
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentUserId: undefined,
+      client: undefined,
+      tasks: undefined,
+      atlasClient: undefined,
+      myData: undefined,
+      search: undefined,
+      res: []
+    };
+    this._loadClient = this._loadClient.bind(this);
+    this._onPressSubmit = this._onPressSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    this._loadClient();
+  }
+
+  _loadClient() {
+    Stitch.initializeDefaultAppClient('hopper-ylufi').then(client => {
+      this.setState({
+        client
+      });
+      client.auth.loginWithCredential(new AnonymousCredential()).then(user => {
+        console.log(`Successfully logged in as user ${user.id}`);
+        this.setState({
+          currentUserId: user.id
+        })
+      }).catch(err => {
+        console.log(`Failed to log in anonymously: ${err}`);
+        this.setState({
+          currentUserId: undefined
+        })
+      });
+      const dbClient = client.getServiceClient(MongoDB.RemoteMongoClient.factory, "mongodb-atlas");
+      this.setState({
+        atlasClient: dbClient
+      });
+      this.setState({
+        myData: dbClient.db("MyData")
+      });
+    });
+
+  }
+
+  _onPressSubmit() {
+    const collection = this.state.myData.collection("ulta_product");
+    const query = {
+      "DESCRIPTION": {
+        "$regex": ". *" + this.state.search + ".*"
+      }
+    };
+    const projection = {
+      "_id": 0
+    };
+    collection.find(query, projection)
+      .toArray()
+      .then(items => {
+        console.log(`Successfully found ${items.length} documents.`)
+        // items.forEach(console.log)
+        this.setState({res : items})
+        return this.res
+      })
+      .catch(err => console.error(`Failed to find documents: ${err}`))
+  //   let returnVal = collection.find(query, projection)
+  //     .toArray()
+  //     .then(items => {
+  //       console.log(`Successfully found ${items.length} documents.`)
+  //       items.forEach(console.log)
+  //       return items
+  //     })
+  //     .catch(err => console.error(`Failed to find documents: ${err}`))
+  //   this.setState({ res: returnVal });
+  //   console.log(res);
+  }
 
   updateSearch = search => {
     this.setState({ search });
@@ -74,39 +151,72 @@ class PrepareScreen extends Component {
     });
   }
 
+  isPopulated = () => {
+    if(this.state.res !== []) {
+    }
+    return null
+  }
+
+  renderItem = (item) => {
+    console.log(item)
+    return;
+  }
+
   render() {
     const { search } = this.state;
     return(
-      <View style={{marginTop:16}}>
-        <Header 
+      <View >
+        <Header
           placement="center"
-          statusBarProps={{ barStyle: 'light-content' }}
-          barStyle="light-content"
+          statusBarProps={{ barStyle: "dark-content" }}
+          barStyle="dark-content"
+          leftComponent={<Icon
+            name="arrow-back"
+          />}
           centerComponent={{ text: 'Spice Up The Night', style: { fontSize: 22, fontWeight: 'bold', color: '#fff' } } }
           containerStyle={{
-            backgroundColor: '#3D6DCC',
             justifyContent: 'space-around',
+            backgroundColor: '#3f6bd9'
           }}
         />
-        <View style={{marginTop:10, flexDirection:"row"}}>
+        <View style={{marginTop:10, flexDirection:"row", marginLeft:3}}>
           <Input 
-            placeholder="Search..."
-            containerStyle={{width:300}}
-            // rightIcon={
-            //   <Icon
-            //     raised
-            //     size={17}
-            //     name="search"
-            //   />
-            // }
+            placeholder="Type Here..."
+            onChangeText={(text) => this.setState({search: text})}
+            containerStyle={{width:250}}
           />
-          <Icon
+          <Button
             raised
-            justifyContent="flex-end"
-            size={18}
-            name="search"
-          />
+            icon={<Icon
+              name="search"
+              size={18}
+              color="white"
+            />}
+            iconRight
+            title="Search "
+            backgroundColor="#3f6bd9"
+            onPress={() => this._onPressSubmit()}
+			    />
+          {/* <PricingCard
+            color="#4f9deb"
+            title="Free"
+            price="$0"
+            info={this.state.res}
+            // button={{ title: 'GET STARTED', icon: 'flight-takeoff' }}
+          /> */}
+          
         </View>
+
+          {/* <Text>{JSON.parse(item.BRAND_NAME)}</Text> */}
+        <View> {
+            <FlatList
+                data={this.state.res}
+                renderItem={item => this.renderItem(item.item)}
+              />
+        }
+        </View>
+          
+        
         
         <Icon
           raised
@@ -117,9 +227,15 @@ class PrepareScreen extends Component {
           size={30}
           containerStyle={{marginLeft: 270, marginTop: 350}}
         />
+
+        <View>
+
+        </View>
       </View>
     );
   }
+  
+  
 }
 
 export default PrepareScreen;
