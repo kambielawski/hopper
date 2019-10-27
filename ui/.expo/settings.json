@@ -1,16 +1,8 @@
 {
-<<<<<<< HEAD
   "hostType": "lan",
   "lanType": "ip",
   "dev": true,
   "minify": false,
   "urlRandomness": null,
-=======
-  "hostType": "tunnel",
-  "lanType": "ip",
-  "dev": true,
-  "minify": false,
-  "urlRandomness": "a6-kj2",
->>>>>>> remotes/origin/marcus
   "https": false
 }
