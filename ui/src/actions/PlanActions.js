@@ -13,3 +13,10 @@ export const AddStartTime = time => {
     payload: { time },
   };
 }
+
+export const AddNumber = number => {
+  return {
+    type: 'addPhoneNumber',
+    payload: { number },
+  };
+}

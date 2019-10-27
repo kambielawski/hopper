@@ -3,7 +3,7 @@ import React from 'react';
 const INITIAL_STATE = {
   locations: [],
   startTime: null,
-  endTime: null,
+  numbers: []
 }
 
 export default (state=INITIAL_STATE, action) => {
@@ -11,7 +11,10 @@ export default (state=INITIAL_STATE, action) => {
     case "addLocation":
       return { ...state, locations: [...state.locations, action.payload.location]};
     case "addStartTime": 
-      return { ...state, timeStart: action.payload };
+      return { ...state, startTime: action.payload.time };
+    case "addPhoneNumber":
+      console.log('payload', action.payload)
+      return { ...state, numbers: [...state.numbers, action.payload.number]}
     default:
       return state;
   }

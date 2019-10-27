@@ -4,10 +4,14 @@ import { connect } from 'react-redux';
 import { Button } from 'react-native-elements';
 import TimePicker from './TimePicker';
 
-import { AddStartTime, AddEndTime } from '../actions/PlanActions';
+import { AddStartTime } from '../actions/PlanActions';
 // import DateTimePicker from '@react-native-community/datetimepicker';
 
 class AddTimeScreen extends Component {
+  static navigationOptions = {
+    title: "Pick a Time"
+  }
+
   constructor(props) {
     super(props);
     this.state = { startTime: new Date() };
@@ -39,8 +43,6 @@ const styles = {
 
 const mapStateToProps = state => {
   const { startTime } = state.PlanReducer;
-
-  console.log(startTime);
 
   return { startTime };
 }

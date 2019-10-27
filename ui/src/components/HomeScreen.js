@@ -4,6 +4,10 @@ import { Button } from 'react-native-elements';
 
 class HomeScreen extends Component {
 
+  static navigationOptions = {
+    title: "Home"
+  }
+
   render() {
     return(
       <View style={styles.viewStyle}>

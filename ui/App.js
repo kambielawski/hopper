@@ -12,13 +12,14 @@ import SafetyScreen from './src/components/SafetyScreen';
 import LocationScreen from './src/components/LocationScreen';
 import AddTimeScreen from './src/components/AddTimeScreen';
 import AddFriendsScreen from './src/components/AddFriendsScreen';
-import TimePicker from './src/components/TimePicker';
+import FinishScreen from './src/components/FinishScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
   Location: LocationScreen,
   Time: AddTimeScreen,
   AddFriends: AddFriendsScreen,
+  Finish: FinishScreen,
 });
 
 const AppNavigator = createBottomTabNavigator({
