@@ -3,6 +3,10 @@
   "lanType": "ip",
   "dev": true,
   "minify": false,
+<<<<<<< HEAD
   "urlRandomness": "sf-6aw",
+=======
+  "urlRandomness": "en-m3c",
+>>>>>>> 589ba22a3a8e3efb7c76db8606e76ef272afcd1e
   "https": false
 }

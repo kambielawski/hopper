@@ -62,7 +62,7 @@ class AddFriendsScreen extends Component {
 
 const styles = {
   numViewStyle: {
-    backgroundColor: 'red',
+    backgroundColor: '#c54040',
     flex: 1,
     flexDirection: 'col',
     borderRadius: 2,

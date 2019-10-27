@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
+<<<<<<< HEAD
 import { View, TextInput, Text, FlatList, SafeAreaView } from 'react-native';
 import { Header, SearchBar, Icon, Input, Button, PricingCard } from 'react-native-elements';
+=======
+import { View, TextInput, Text, FlatList, Image, TouchableOpacity } from 'react-native';
+import { Header, SearchBar, Button } from 'react-native-elements';
+>>>>>>> 589ba22a3a8e3efb7c76db8606e76ef272afcd1e
 import { Stitch, RemoteMongoClient, AnonymousCredential } from "mongodb-stitch-react-native-sdk";
 const MongoDB = require('mongodb-stitch-react-native-services-mongodb-remote');
 import * as Location from 'expo-location';
@@ -23,10 +28,15 @@ class PrepareScreen extends Component {
       myData: undefined,
       search: undefined,
       location: undefined,
+<<<<<<< HEAD
       res: []
+=======
+      res: [],
+>>>>>>> 589ba22a3a8e3efb7c76db8606e76ef272afcd1e
     };
     this._loadClient = this._loadClient.bind(this);
     this._onPressSubmit = this._onPressSubmit.bind(this);
+
   }
 
   componentDidMount() {
@@ -35,11 +45,10 @@ class PrepareScreen extends Component {
 
   _loadClient() {
     Stitch.initializeDefaultAppClient('hopper-ylufi').then(client => {
-      this.setState({
-        client
-      });
+      this.setState({ client });
       client.auth.loginWithCredential(new AnonymousCredential()).then(user => {
         console.log(`Successfully logged in as user ${user.id}`);
+<<<<<<< HEAD
         this.setState({
           currentUserId: user.id
         })
@@ -56,16 +65,28 @@ class PrepareScreen extends Component {
       this.setState({
         myData: dbClient.db("MyData")
       });
+=======
+        this.setState({ currentUserId: user.id })
+      }).catch(err => {
+        console.log(`Failed to log in anonymously: ${err}`);
+        this.setState({ currentUserId: undefined })
+      });
+      const dbClient = client.getServiceClient(MongoDB.RemoteMongoClient.factory, "mongodb-atlas");
+      this.setState({ atlasClient: dbClient });
+      this.setState({ myData: dbClient.db("MyData") });
+>>>>>>> 589ba22a3a8e3efb7c76db8606e76ef272afcd1e
     });
 
   }
 
-  getImageURI = async (i) => {
-    let pics = await fetch(`https://pixabay.com/api/?key=14077809-0fb00ab558b80f5a4594810cc&q=${i.item.CATEGORY_NAME}&image_type=photo`);
+  getImages = async () => {
+    let pics = await fetch(`https://pixabay.com/api/?key=14077809-0fb00ab558b80f5a4594810cc&q=${this.state.search}&image_type=photo`);
     const obj = await pics.json();
+    obj.hits.map(hit => this.images.push(hit.previewURL));
     const preview = obj.hits[i.index].previewURL;
+    console.log(this.state.images);
 
-    return preview;
+    return <Image source={{ uri: preview }} style={{ width: 100, height: 100 }} />;
   }
 
   _onPressSubmit = async () => {
@@ -102,6 +123,7 @@ class PrepareScreen extends Component {
       .toArray()
       .then(items => {
         console.log(`Successfully found ${items.length} documents.`)
+<<<<<<< HEAD
         // items.forEach(console.log)
         this.setState({res : items})
         return this.res
@@ -265,30 +287,79 @@ class PrepareScreen extends Component {
 
         <View>
 
+=======
+        return items
+      })
+      .catch(err => console.error(`Failed to find documents: ${err}`))
+  };
+
+  renderItem = i => {
+    return (
+      <View>
+        <Text style={{ ...styles.itemTextStyle, fontWeight: 'bold', fontSize: 18, marginLeft: 15, marginTop: 15 }}>{i.item.DISPLAY_NAME}</Text>
+        <View style={styles.itemBoxStyle}>
+            <Text style={{ marginLeft: 15, alignSelf: 'left', color: 'white', fontSize: 18 }}>{i.item.BRAND_NAME}</Text>
+            <Text style={{ marginLeft: 15, fontSize: 24, color: 'white', alignSelf: 'right', width: 250, flex: 1 }}>${i.item.LIST_PRICE}</Text>
+        </View>
+      </View>
+    )
+  }
+
+
+  render() {
+    const { search } = this.state;
+    return (
+      <View>
+        <View style={{ marginTop: 20 }}>
+          {/* <Header leftComponent={{ icon: 'whatshot' }}
+            statusBarProps={{ barStyle: 'light-content' }}
+            barStyle="light-content"
+            centerComponent={{ text: 'Spice Up The Night', style: { color: '#fff' } }}
+            containerStyle={{
+              backgroundColor: '#3D6DCC',
+              justifyContent: 'space-around',
+            }}
+          /> */}
+          <TextInput
+            style={{ height: 40, fontSize: 18, marginLeft: 20 }}
+            onChangeText={(text) => this.setState({ search: text })}
+            placeholder="Type Here..."
+          />
+          <Button
+            style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}
+            title="Search"
+            onPress={() => this._onPressSubmit().then(stuff => this.setState({ res: stuff }))}
+          />
+        </View>
+        <View>
+          {this.getImages}
+          <FlatList
+            data={this.state.res}
+            renderItem={i => this.renderItem(i)}
+            keyExtractor={i => i.index}
+          />
+>>>>>>> 589ba22a3a8e3efb7c76db8606e76ef272afcd1e
         </View>
       </View>
     );
   }
-  
-  
 }
 
 const styles = {
   itemBoxStyle: {
-    backgroundColor: 'blue',
+    backgroundColor: '#c54040',
     flex: 1,
     flexDirection: 'col',
     borderRadius: 2,
-    alignItems: 'center',
     marginLeft: 10,
     marginRight: 10,
     marginTop: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
   },
   itemTextStyle: {
-    color: 'white',
+    color: '#8A1A1A',
     fontSize: 16,
-    paddingTop: 4,
-    paddingBottom: 4,
   }
 }
 

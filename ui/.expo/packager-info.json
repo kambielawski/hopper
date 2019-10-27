@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "expoServerPort": null,
   "expoServerNgrokUrl": null,
   "packagerNgrokUrl": null,
@@ -6,4 +7,13 @@
   "devToolsPort": 19002,
   "packagerPort": null,
   "packagerPid": null
+=======
+  "expoServerNgrokUrl": "https://en-m3c.kamtb28.ui.exp.direct",
+  "packagerNgrokUrl": "https://packager.en-m3c.kamtb28.ui.exp.direct",
+  "ngrokPid": 33672,
+  "devToolsPort": 19002,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 32888
+>>>>>>> 589ba22a3a8e3efb7c76db8606e76ef272afcd1e
 }
