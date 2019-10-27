@@ -6,3 +6,17 @@ export const AddLocation = (location) => {
     payload: { location },
   };
 }
+
+export const AddStartTime = time => {
+  return {
+    type: 'addStartTime',
+    payload: { time },
+  };
+}
+
+export const AddNumber = number => {
+  return {
+    type: 'addPhoneNumber',
+    payload: { number },
+  };
+}

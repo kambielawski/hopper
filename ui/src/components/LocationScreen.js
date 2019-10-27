@@ -78,7 +78,7 @@ class LocationScreen extends Component {
       return null;
     }
     return (
-      <Button title="Next" onPress={() => this.props.navigation.navigate('Time')}/>
+      <Button style={{marginLeft: 20, marginRight: 20}} title="Next" onPress={() => this.props.navigation.navigate('Time')}/>
     )
   }
 

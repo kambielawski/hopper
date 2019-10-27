@@ -7,10 +7,17 @@ function Separator() {
   return <View style={styles.separator} />;
 }
 
+<<<<<<< HEAD
 class HomeScreen extends Component {
   state = {
     text: 'http://facebook.github.io/react-native/',
   };
+=======
+  static navigationOptions = {
+    title: "Home"
+  }
+
+>>>>>>> f9e0cc1a773003886ce92a7682e3cb2001b41cb1
   render() {
     return(
       <SafeAreaView style={styles.container}>
