@@ -6,7 +6,7 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
 import { Button, StyleSheet, Text, View } from 'react-native';
-import { Stitch, AnonymousCredential } from 'mongodb-stitch-react-native-sdk';
+// import { Stitch, AnonymousCredential } from 'mongodb-stitch-react-native-sdk';
 
 import reducers from './src/reducers';
 import HomeScreen from './src/components/HomeScreen';

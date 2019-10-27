@@ -1,1 +1,9 @@
-{}
+{
+  "expoServerPort": 19000,
+  "expoServerNgrokUrl": "https://de-wx3.anonymous.ui.exp.direct",
+  "packagerNgrokUrl": "https://packager.de-wx3.anonymous.ui.exp.direct",
+  "ngrokPid": 30073,
+  "devToolsPort": 19002,
+  "packagerPort": 19005,
+  "packagerPid": 30063
+}
