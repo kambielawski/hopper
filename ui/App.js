@@ -25,8 +25,12 @@ const HomeStack = createStackNavigator({
   Finish: FinishScreen,
 });
 
+const PrepareStack = createStackNavigator({
+  Prepare: PrepareScreen
+});
+
 const AppNavigator = createBottomTabNavigator({
-  Prepare: PrepareScreen,
+  Prepare: PrepareStack,
   Home: HomeStack,
   Safety: SafetyScreen,
 });

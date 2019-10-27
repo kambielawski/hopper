@@ -9,6 +9,10 @@ import Constants from 'expo-constants';
 import Confetti from "react-native-confetti";
 
 class PrepareScreen extends Component {
+  static navigationOptions = {
+    title: "Spice Up The Night"
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -56,39 +60,45 @@ class PrepareScreen extends Component {
 
   }
 
-    _onPressSubmit = async() =>{
+  getImageURI = async (i) => {
+    let pics = await fetch(`https://pixabay.com/api/?key=14077809-0fb00ab558b80f5a4594810cc&q=${i.item.CATEGORY_NAME}&image_type=photo`);
+    const obj = await pics.json();
+    const preview = obj.hits[i.index].previewURL;
 
+    return preview;
+  }
 
-      var query = "";
-      var collection = "";
-      if("where" == String(this.state.search).substring(0,5))
-      {
+  _onPressSubmit = async () => {
 
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
-        if (status !== 'granted') {
-          this.setState({
-            errorMessage: 'Permission to access location was denied',
-          });
-        }
-        let location = await Location.getCurrentPositionAsync({});
-        this.setState({ location });
-        console.log(location);
-        var obj = {
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude
-        }
-        let geocode = await Location.reverseGeocodeAsync(obj);
-        query = { "CITY": { "$eq": geocode[0].city}};
-        
-        collection = this.state.myData.collection("ulta_store");
-      
+    var query = "";
+    var collection = "";
+    if ("where" == String(this.state.search).substring(0, 5)) {
+
+      let { status } = await Permissions.askAsync(Permissions.LOCATION);
+      if (status !== 'granted') {
+        this.setState({
+          errorMessage: 'Permission to access location was denied',
+        });
       }
-      else{
-        collection = this.state.myData.collection("ulta_product");
-        query = { "DESCRIPTION": { "$regex": ". *"+this.state.search+".*"}};
+      let location = await Location.getCurrentPositionAsync({});
+      this.setState({ location });
+      console.log(location);
+      var obj = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude
       }
-      const projection = { "_id": 0 };
-      return collection.find(query, projection)
+      let geocode = await Location.reverseGeocodeAsync(obj);
+      query = { "CITY": { "$eq": geocode[0].city } };
+
+      collection = this.state.myData.collection("ulta_store");
+
+    }
+    else {
+      collection = this.state.myData.collection("ulta_product");
+      query = { "DESCRIPTION": { "$regex": ". *" + this.state.search + ".*" } };
+    }
+    const projection = { "_id": 0 };
+    return collection.find(query, projection)
       .toArray()
       .then(items => {
         console.log(`Successfully found ${items.length} documents.`)
@@ -261,6 +271,25 @@ class PrepareScreen extends Component {
   }
   
   
+}
+
+const styles = {
+  itemBoxStyle: {
+    backgroundColor: 'blue',
+    flex: 1,
+    flexDirection: 'col',
+    borderRadius: 2,
+    alignItems: 'center',
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 10,
+  },
+  itemTextStyle: {
+    color: 'white',
+    fontSize: 16,
+    paddingTop: 4,
+    paddingBottom: 4,
+  }
 }
 
 export default PrepareScreen;
