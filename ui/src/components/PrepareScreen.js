@@ -10,7 +10,7 @@ class PrepareScreen extends Component {
   updateSearch = search => {
     this.setState({ search });
   };
-  
+
   startRecording = async () => {
     const {
       status
@@ -79,11 +79,6 @@ class PrepareScreen extends Component {
     return(
       <View style={{marginTop:16}}>
         <Header 
-          leftComponent={<Icon
-                          name='whatshot'
-                          color='red'
-                          size={35}
-                        />}
           placement="center"
           statusBarProps={{ barStyle: 'light-content' }}
           barStyle="light-content"
